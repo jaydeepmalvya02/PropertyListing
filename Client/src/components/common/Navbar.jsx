@@ -36,8 +36,19 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 sm:w-10 sm:h-10">
-              <Canvas camera={{ position: [2, 2, 2] }}>
+            {/* <div className="w-8 h-8 sm:w-10 sm:h-10">
+              <Canvas
+                camera={{ position: [2, 2, 2] }}
+                onCreated={({ gl }) => {
+                  gl.getContext().canvas.addEventListener(
+                    "webglcontextlost",
+                    (event) => {
+                      event.preventDefault();
+                      console.warn("WebGL context lost");
+                    }
+                  );
+                }}
+              >
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <OrbitControls
@@ -47,7 +58,7 @@ const Navbar = () => {
                 />
                 <Cube />
               </Canvas>
-            </div>
+            </div> */}
             <span className="font-bold text-lg sm:text-xl text-gray-800">
               HomeHarbor
             </span>

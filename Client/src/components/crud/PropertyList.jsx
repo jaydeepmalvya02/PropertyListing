@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import propertiesData from "../../data";
+import React, { useContext, useState } from "react";
+// import propertiesData from "../../data";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContex";
 
 const PropertyList = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const {propertiesData} = useContext(AuthContext)
 
   const filteredProperties = propertiesData.filter(
     (property) =>
       property.title.toLowerCase().includes(search.toLowerCase()) ||
       property.location.toLowerCase().includes(search.toLowerCase())
   );
+  console.log(propertiesData);
+  
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -33,11 +37,11 @@ const PropertyList = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
         {filteredProperties.map((property) => (
           <div
-            key={property.id}
+            key={property._id}
             className="bg-white rounded-lg shadow-md overflow-hidden border hover:translate-y-[-10px]  translation-x-0 transition-all   "
           >
             <img
-              src={property.image}
+              src={property.images?.[1] || "https://via.placeholder.com/400"}
               alt={property.title}
               className="w-full h-48 object-cover"
             />
@@ -53,7 +57,7 @@ const PropertyList = () => {
               </p>
               <div className="mt-4 flex justify-end">
                 <button
-                  onClick={() => navigate(`/property/${property.id}`)}
+                  onClick={() => navigate(`/property/${property._id}`)}
                   className="text-blue-600 border border-blue-600 px-3 py-1 rounded hover:bg-blue-100"
                 >
                   View Details

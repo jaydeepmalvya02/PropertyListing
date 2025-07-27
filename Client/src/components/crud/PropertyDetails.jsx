@@ -2,15 +2,14 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContex";
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const PropertyDetails = () => {
   const { id } = useParams();
-  const { propertiesData} = useContext(AuthContext);
+  const { propertiesData } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
-  const property = propertiesData.find((p) => p.id === parseInt(id));
-
+  const property = propertiesData.find((p) => p._id === id);
 
   if (!property) {
     return (
@@ -18,9 +17,9 @@ const PropertyDetails = () => {
     );
   }
 
-  // Related properties (same location but different ID)
+  // Related properties
   const related = propertiesData.filter(
-    (item) => item.location === property.location && item.id !== property.id
+    (item) => item.location === property.location && item._id !== property._id
   );
 
   return (
@@ -33,18 +32,18 @@ const PropertyDetails = () => {
         ← Back
       </button>
 
-      {/* Property Main Card */}
+      {/* Main Property Card */}
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="grid md:grid-cols-2 gap-6">
           <img
-            src={property.image}
+            src={property.images?.[0] || "https://via.placeholder.com/400"}
             alt={property.title}
             className="w-full h-96 object-cover rounded"
           />
           <div>
             <h1 className="text-3xl font-bold mb-3">{property.title}</h1>
-            <p className="text-gray-600 mb-1">
-              <strong>Location:</strong> {property.location}
+            <p className="text-gray-600 flex items-center gap-2 mb-1">
+              <FaMapMarkerAlt /> {property.location}
             </p>
             <p className="text-gray-600 mb-1">
               <strong>Type:</strong> {property.type}
@@ -52,21 +51,42 @@ const PropertyDetails = () => {
             <p className="text-gray-600 mb-1">
               <strong>Status:</strong> {property.status}
             </p>
-            <p className="text-gray-600 mb-4">
-              <strong>Price:</strong> ₹{property.price}
-            </p>
-            <p className="text-gray-700 mb-4">
-              Beautiful property located in {property.location}. Ideal for
-              families or investment purposes.
+            <p className="text-gray-600 mb-1">
+              <strong>Price:</strong> ₹{property.price.toLocaleString()}
             </p>
 
-            {/* Contact Button */}
-            <button className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
-              Contact Agent
-            </button>
+            <div className="mt-4 border-t pt-4">
+              <h3 className="text-lg font-semibold mb-2">Contact Details</h3>
+              <p className="text-gray-700">
+                <strong>Name:</strong> {property.contactName}
+              </p>
+              <p className="text-gray-700 flex items-center gap-2">
+                <FaPhone /> {property.phone}
+              </p>
+              <p className="text-gray-700 flex items-center gap-2">
+                <FaEnvelope /> {property.email}
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Gallery */}
+      {property.images?.length > 1 && (
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold mb-2">More Images</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {property.images.slice(1).map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`Property image ${idx + 2}`}
+                className="h-48 object-cover rounded shadow"
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Map Placeholder */}
       <div className="bg-gray-100 h-64 mt-8 flex items-center justify-center rounded text-gray-500">
@@ -80,18 +100,20 @@ const PropertyDetails = () => {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             {related.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="bg-white shadow p-4 rounded hover:shadow-lg transition cursor-pointer"
-                onClick={() => navigate(`/property/${item.id}`)}
+                onClick={() => navigate(`/property/${item._id}`)}
               >
                 <img
-                  src={item.image}
+                  src={item.images?.[0] || "https://via.placeholder.com/300"}
                   alt={item.title}
                   className="h-48 w-full object-cover rounded mb-2"
                 />
                 <h3 className="font-bold text-lg">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.location}</p>
-                <p className="text-sm text-gray-700">₹{item.price}</p>
+                <p className="text-sm text-gray-700">
+                  ₹{item.price.toLocaleString()}
+                </p>
               </div>
             ))}
           </div>
