@@ -85,7 +85,7 @@ const Footer = () => {
           <p className="text-sm text-gray-400 mb-4">
             Get updates on new listings.
           </p>
-          <form className="flex flex-col sm:flex-row items-center gap-2">
+          <form className="flex flex-col sm:flex-row items-center gap-0.5">
             <input
               type="email"
               placeholder="Enter your email"
