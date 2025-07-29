@@ -16,6 +16,11 @@ const propertySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    description: {
+      type: String,
+      maxLength: 100,
+      trim: true,
+    },
 
     // Now an array of image URLs
     images: [

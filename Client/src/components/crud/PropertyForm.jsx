@@ -10,6 +10,7 @@ const PropertyForm = () => {
 
   const [formData, setFormData] = useState({
     title: "",
+    description: "",
     location: "",
     price: "",
     type: "",
@@ -87,6 +88,7 @@ const PropertyForm = () => {
     const imageUrls = images.map((img) => img.url);
     addProperty({
       title: formData.title,
+      description:formData.description,
       location: formData.location,
       price: formData.price,
       type: formData.type,
@@ -97,12 +99,12 @@ const PropertyForm = () => {
       images: imageUrls, // 🔁 match backend field name
     });
 
-
     toast.success("Property Successfully Added");
     navigate("/");
 
     setFormData({
       title: "",
+      description: "",
       location: "",
       price: "",
       type: "",
@@ -125,7 +127,7 @@ const PropertyForm = () => {
       </h2>
 
       {/* Input Fields */}
-      {["title", "location", "price", "type", "status"].map((field) => (
+      {["title", "location", "price", "type", "status","description"].map((field) => (
         <div key={field}>
           <label className="block mb-1 text-gray-600">
             {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -140,6 +142,10 @@ const PropertyForm = () => {
           />
         </div>
       ))}
+      {/* <div>
+        <label className="block mb-1 text-gray-600">Description</label>
+        <textarea placeholder="Short Description" className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400" />
+      </div> */}
 
       {/* Contact Info */}
       <hr />
